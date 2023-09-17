@@ -1,13 +1,10 @@
 import logging
 from django.shortcuts import render
 from django.views import View
-from rest_framework.pagination import PageNumberPagination
-
-from .models import Rate
-from .serializers import RateSerializer
 from .parser import run_parser
 
 logger = logging.getLogger(__name__)
+
 
 class MainPageView(View):
     """
@@ -22,5 +19,5 @@ class MainPageView(View):
 class ParseUpdate(View):
 
     def get(self, request, *args, **kwargs):
-        run_parser()  # Запуск парсинга и обновления данных
+        run_parser()
         return render(request, 'rate/catalog.html')
