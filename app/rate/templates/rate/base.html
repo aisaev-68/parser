@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>МТС</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="{% static 'rate/favicon.ico' %}" rel="shortcut icon">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Regular.woff' %}" as="font">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Italic.woff' %}" as="font">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Bold.woff' %}" as="font">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Bold_Italic.woff' %}" as="font">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Light.woff' %}" as="font">
+    <link rel="preload" href="{% static 'rate/assets/fonts/Roboto/Roboto-Light_Italic.woff' %}" as="font">
+    <link rel="stylesheet" href="{% static 'rate/assets/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'rate/assets/css/basic.css' %}">
+    <link rel="stylesheet" href="{% static 'rate/assets/css/extra.css' %}">
+    <script src="{% static 'rate/assets/plg/jQuery/jquery-3.5.0.slim.min.js' %}"></script>
+    <script src="{% static 'rate/assets/plg/range/ion.rangeSlider.min.js' %}"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static 'rate/assets/plg/CountDown/countdown.js' %}"></script>
+
+
+</head>
+<body class="Site" id="site">
+<header class="Header">
+    <div class="wrap">
+        <div class="row Header-rowMain">
+            <div class="row-block Header-logo"><a class="logo" href="/"><img class="logo-image"
+                                                                             src="{% static 'rate/assets/img/logo-eco.svg' %}"
+                                                                             alt="logo.png"/></a>
+            </div>
+            <nav class="row-block row-block_right Header-menu">
+                <div class="menuModal" id="navigate">
+                     <ul class="menu menu_main">
+                            <li class="menu-item"><a class="menu-link" href="/">Главная</a>
+                            </li>
+                            <li class="menu-item"><a class="menu-link" href="{% url 'rate:parser_update' %}">Парсить</a>
+                            </li>
+                     </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+<footer class="Footer">
+    <div class="Footer-copy">
+        <div class="wrap">
+            <div class="row row_space">
+                <div class="row-block">© Copyright&#32;<a href="#">Parser.</a>&#32;All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% block mixins %}
+{% endblock %}
+<script src="{% static 'rate/assets/js/app.js' %}"></script>
+<script src="{% static 'rate/assets/plg/form/jquery.form.js' %}"></script>
+<script src="{% static 'rate/assets/plg/Slider/slick.min.js' %}"></script>
+<script src="{% static 'rate/assets/js/scripts.js' %}"></script>
+</body>
+</html>
