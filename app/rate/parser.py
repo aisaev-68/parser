@@ -31,7 +31,7 @@ def click_show_more(driver) -> bool:
     :return: bool
     """
     try:
-        show_more_button = driver.wait.until(
+        show_more_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'button.btn.btn_secondary'))
         )
         show_more_button.click()
