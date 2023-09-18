@@ -20,9 +20,8 @@ def initialize_driver():
     return webdriver.Chrome(options=chrome_options)
 
 
-def get_url(driver, url):
-    a = driver.get(url)
-    logger.debug(a)
+def get_url(driver, url) -> None:
+    driver.get(url)
 
 
 def click_show_more(driver, btn) -> bool:
@@ -131,7 +130,7 @@ def extract_card_data(card_element) -> dict:
     return data
 
 
-def run_parser():
+def run_parser() -> None:
     """
     Функция запуска парсера.
     :return: None
