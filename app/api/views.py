@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from rate.models import Rate
 from rate.serializers import RateSerializer
+from rate.parser import run_parser
 
 logger = logging.getLogger(__name__)
 
@@ -70,3 +71,12 @@ class RateView(APIView):
 
         logger.info("Получаем все тарифы")
         return Response(response_data, status=200)
+
+
+class UpdateRateView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        logger.info("Обновляем данные")
+        run_parser()
+
+        return Response({'message': 'Данные успешно обновлены'}, status=200)

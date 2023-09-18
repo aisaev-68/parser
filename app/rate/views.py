@@ -1,7 +1,7 @@
 import logging
 from django.shortcuts import render
 from django.views import View
-from .parser import run_parser
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,6 @@ class MainPageView(View):
 
 
 class ParseUpdate(View):
-
     def get(self, request, *args, **kwargs):
-        run_parser()
-        return render(request, 'rate/catalog.html')
+        # Показать страницу с сообщением о начале парсинга
+        return render(request, 'rate/progress_parser.html')

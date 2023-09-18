@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import RateView
+from .views import RateView, UpdateRateView
 
 
 app_name = 'api'
 urlpatterns = [
     path('rates/', RateView.as_view(), name="rate_list"),
-    path("rate/<int:pk>/", RateView.as_view(), name="rate_by_id"),
+    path("update/", UpdateRateView.as_view(), name="update_rate"),
 ]
