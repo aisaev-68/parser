@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from decouple import config
 
 from rate import models
 
@@ -24,7 +25,7 @@ def get_url(driver, url):
     logger.debug(a)
 
 
-def click_show_more(driver) -> bool:
+def click_show_more(driver, btn) -> bool:
     """
     Функция для раскрытия страницы
     :param driver:
@@ -32,8 +33,10 @@ def click_show_more(driver) -> bool:
     """
     try:
         show_more_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'button.btn.btn_secondary'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, btn))
         )
+        print(11, show_more_button)
+
         show_more_button.click()
         return True
     except:
@@ -68,22 +71,22 @@ def extract_card_data(card_element) -> dict:
     data = {}
 
     try:
-        badge_text = card_element.find_element(By.CSS_SELECTOR, '.badge-text').text
+        badge_text = card_element.find_element(By.CSS_SELECTOR, config('BADGE_TEXT')).text
     except:
         badge_text = ''
 
-    card_title = card_element.find_element(By.CSS_SELECTOR, '.card-title__link').text
+    card_title = card_element.find_element(By.CSS_SELECTOR, config('CARD_TITLE')).text
     data['card_title'] = card_title
 
     try:
-        card_description = card_element.find_element(By.CSS_SELECTOR, '.card-description.card-description__margin').text
+        card_description = card_element.find_element(By.CSS_SELECTOR, config('CARD_DESCRIPTION')).text
         data['card_description'] = card_description
     except:
         data['card_description'] = ''
     try:
-        feature_elements = card_element.find_element(By.CLASS_NAME, 'feature__wrapper').text
+        feature_elements = card_element.find_element(By.CLASS_NAME, config('FEATURE_WRAPPER')).text
         for feature_element in feature_elements:
-            feature_text = feature_element.find_element(By.CLASS_NAME, 'feature-description__text').text
+            feature_text = feature_element.find_element(By.CLASS_NAME, config('FEATURE_DESCRIPTION')).text
 
             if "ГБ" in feature_text:
                 data['internet'] = feature_text
@@ -96,13 +99,12 @@ def extract_card_data(card_element) -> dict:
     except:
         pass
 
-
     try:
-        price_main = card_element.find_element(By.CLASS_NAME, 'price-main').find_element(By.CLASS_NAME,
-                                                                                          'price-text').text
+        price_main = card_element.find_element(By.CLASS_NAME, config('PRICE_MAIN')).find_element(By.CLASS_NAME,
+                                                                                                 'price-text').text
 
         price_quota = card_element.find_element(By.XPATH,
-                                                '//span[contains(@class, "price-text") and contains(@class, "price-quota") and contains(@class, "price-text__quota-margin")]').text
+                                                config('PRICE_QUOTA')).text
         data['price_main'] = price_main.replace(' ', '')
         data['price_quota'] = price_quota
     except:
@@ -110,14 +112,14 @@ def extract_card_data(card_element) -> dict:
         data['price_quota'] = ''
 
     try:
-        price_sale = card_element.find_element(By.CLASS_NAME, 'price-sale__margin').find_element(By.CLASS_NAME,
-                                                                                                   'price-text').text
+        price_sale = card_element.find_element(By.CLASS_NAME, config('PRICE_SALE')).find_element(By.CLASS_NAME,
+                                                                                                 'price-text').text
         data['price_sale'] = price_sale.replace(' ', '')
     except:
         data['price_sale'] = None
 
     try:
-        annotate_price = card_element.find_element(By.CLASS_NAME, 'price-annotation__margin').text
+        annotate_price = card_element.find_element(By.CLASS_NAME, config('ANNOTATE_PRICE')).text
         if badge_text:
             data['annotate_price'] = badge_text + '.' + annotate_price
         else:
@@ -137,23 +139,29 @@ def run_parser():
     driver = None
     try:
         logger.info('Ищем все карточки услуг на сайте.')
-        url = "https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/mobile-tv-inet"
+        urls = [config('URL1'), config('URL2'), config('URL3'), config('URL4')]
 
         driver = initialize_driver()
-        get_url(driver, url)
-        while click_show_more(driver):
-            time.sleep(1)
 
-        card_elements = driver.find_elements(By.XPATH, '//div[contains(@class, "card__wrapper")]')
+        for url in urls:
+            get_url(driver, url)
+            while click_show_more(driver, config('BTN')):
+                time.sleep(1)
 
-        card_data_list = []
-        for card_element in card_elements:
-            card_data = extract_card_data(card_element)
-            card_data_list.append(card_data)
+            card_elements = driver.find_elements(By.XPATH, config('ELEMENTS'))
 
-        logger.info('Добавляем (обновляем) карточки услуг в базе.')
-        for item in card_data_list:
-            update_or_create_rate(item)
+            logger.info(card_elements)
+
+            card_data_list = []
+            for card_element in card_elements:
+                card_data = extract_card_data(card_element)
+                card_data_list.append(card_data)
+
+            logger.info(card_data_list)
+
+            logger.info('Добавляем (обновляем) карточки услуг в базе.')
+            for item in card_data_list:
+                update_or_create_rate(item)
     finally:
         if driver:
             driver.quit()
@@ -162,4 +170,3 @@ def run_parser():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     run_parser()
-

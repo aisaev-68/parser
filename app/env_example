@@ -4,4 +4,23 @@ USERNAME='test'
 EMAIL='test@test.com'
 PASSWORD=12345
 LAST_NAME="Иванов"
-FIRST_NAME="Иван",
+FIRST_NAME="Иван"
+
+
+
+URL1='https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/mobile-tv-inet'
+URL2='https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/mobile'
+URL3='https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/watches-and-modems'
+URL4='https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/telefon'
+
+BTN='button.btn.btn_secondary'
+ELEMENTS='//div[contains(@class, "card__wrapper")]'
+BADGE_TEXT='.badge-text'
+CARD_TITLE='.card-title__link'
+CARD_DESCRIPTION='.card-description.card-description__margin'
+FEATURE_WRAPPER='feature__wrapper'
+FEATURE_DESCRIPTION='feature-description__text'
+PRICE_MAIN='price-main'
+PRICE_QUOTA='//span[contains(@class, "price-text") and contains(@class, "price-quota") and contains(@class, "price-text__quota-margin")]'
+PRICE_SALE='price-sale__margin'
+ANNOTATE_PRICE='price-annotation__margin'
